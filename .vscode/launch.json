@@ -30,6 +30,16 @@
 			"outDir": null
 		},
 		{
+            "name": "Run mocha",
+            "type": "node",
+            "program": "C:\\Users\\Jon\\AppData\\Roaming\\npm\\node_modules\\mocha\\bin\\_mocha",
+            "stopOnEntry": false,
+            "args": ["test/*.js"],
+            "cwd": ".",
+            "runtimeExecutable": null,
+            "env": { "NODE_ENV": "release"}
+        },
+		{
 			"name": "Attach",
 			"type": "node",
 			// TCP/IP address. Default is "localhost".

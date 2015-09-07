@@ -1,11 +1,10 @@
 //Note the file functions here are synchronous as require is synchronous anyway. 
-function settings() {
+function settings(fs) {
 	var _ = require('lodash'),
-		fs = require('fs'),
 		settings ={
 			rootDir: __dirname
 		},
-		settingsJson = loadFile('./settings.json'),			
+		settingsJson = loadFile('./config.json'),			
 		secretsJson = loadFile('./secrets.json');
 		
 	_.assign(settings,settingsJson,secretsJson);	
