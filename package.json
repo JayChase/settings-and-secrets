@@ -2,11 +2,23 @@
   "name": "settings-and-secets",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "dist/settings.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "files":["dist"],
+  "author": {
+    "name": "Jay Chase",
+    "email": "JonathanChase@outlook.com",
+    "url": "https://netdevplus.wordpress.com"
+  },
+    "bugs": {
+    "url": "https://github.com/Useful-Software-Solutions-Ltd/settings-and-secrets/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Useful-Software-Solutions-Ltd/settings-and-secrets.git"
+  },
   "license": "MIT",
   "dependencies": {
     "lodash": "^3.10.1"
