@@ -1,6 +1,8 @@
 var http = require('http'),
 	fs = require('fs'),
-	settings = require('./settings')(fs),
+	settings = require('./source/settings')(fs,{
+		rootDir: __dirname
+	}),
 	server = http.createServer(function (req, res) {
 		res.writeHead(200, {'Content-Type' : 'text/plain'}); 
 		res.end('settings: ' + JSON.stringify(settings)); 		
