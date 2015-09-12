@@ -27,7 +27,7 @@ describe('settings', function () {
 			.withArgs("./config.json").returns(false)
 			.withArgs("./secrets.json").returns(false);
 
-		settings = require('../source/settings')(fs, { test: "test" });
+		settings = require('../source/settings')({ test: "test" }, null, fs);
 
 		expect(settings).to.haveOwnProperty("test");
 	});
@@ -44,7 +44,7 @@ describe('settings', function () {
 
 		sinon.stub(fs, "readFileSync").returns(JSON.stringify(configFile));
 
-		settings = require('../source/settings')(fs);
+		settings = require('../source/settings')(null, null, fs);
 
 		expect(settings).to.haveOwnProperty("prop1");
 	});
@@ -61,7 +61,7 @@ describe('settings', function () {
 
 		sinon.stub(fs, "readFileSync").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(fs);
+		settings = require('../source/settings')(null, null, fs);
 
 		expect(settings).to.haveOwnProperty("prop2");
 	});
@@ -80,7 +80,7 @@ describe('settings', function () {
 			.withArgs("./config.json").returns(JSON.stringify(configFile))
 			.withArgs("./secrets.json").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(fs);
+		settings = require('../source/settings')(null, null, fs);
 
 		expect(settings.prop1).to.equal("secretOne");
 	});
@@ -99,7 +99,7 @@ describe('settings', function () {
 			.withArgs("./config.json").returns(JSON.stringify(configFile))
 			.withArgs("./secrets.json").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(fs,{ prop1: "customOne" });
+		settings = require('../source/settings')({ prop1: "customOne" }, null, fs);
 
 		expect(settings.prop1).to.equal("customOne");
 	});
@@ -122,9 +122,8 @@ describe('settings', function () {
 			.withArgs("./custom/custom.json").returns(JSON.stringify({ "custom": "custom" }))
 			.withArgs("./custom.json").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(fs, null, ["./custom/config.json", "./custom/custom.json"]);
+		settings = require('../source/settings')(null, ["./custom/config.json", "./custom/custom.json"], fs);
 
 		expect(JSON.stringify(settings)).to.equal('{"prop1":"one","custom":"custom"}');
 	});
-
 });

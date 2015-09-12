@@ -1,14 +1,18 @@
 //Note the file functions here are synchronous as require is synchronous anyway. 
-function settings(fs, customSettings, settingsFiles) {
+function settings(customSettings, settingsFiles, fs) {
 	var _ = require('lodash'),
 		settings = {
-		};		
+		};
+
+	if (!fs) {
+		fs = require('fs');
+	}
 
 	settingsFiles = _.isArray(settingsFiles) ? settingsFiles : ['./config.json', './secrets.json'];
 	customSettings = _.isObject(customSettings) ? customSettings : {};
-	
-	settingsFiles.forEach(function(settingsFile){
-		_.assign(settings,loadFile(settingsFile));
+
+	settingsFiles.forEach(function (settingsFile) {
+		_.assign(settings, loadFile(settingsFile));
 	});
 
 	_.assign(settings, customSettings);

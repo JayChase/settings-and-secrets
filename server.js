@@ -1,6 +1,5 @@
-var http = require('http'),
-	fs = require('fs'),
-	settings = require('./source/settings')(fs,{
+var http = require('http'),	
+	settings = require('./source/settings')({
 		rootDir: __dirname
 	}),
 	server = http.createServer(function (req, res) {
