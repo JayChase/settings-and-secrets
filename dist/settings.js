@@ -1,5 +1,5 @@
 //Note the file functions here are synchronous as require is synchronous anyway. 
-function settings(customSettings, settingsFiles, fs) {
+function settings(customSettings, settingsFiles, ignoreEnvVars, fs) {
 	var _ = require('lodash'),
 		settings = {
 		};
@@ -17,6 +17,10 @@ function settings(customSettings, settingsFiles, fs) {
 
 	_.assign(settings, customSettings);
 
+	if (!ignoreEnvVars) {
+		applyEnvVars();
+	}
+
 	return settings;
 
 	function loadFile(filePath) {
@@ -30,6 +34,14 @@ function settings(customSettings, settingsFiles, fs) {
 		} else {
 			return {};
 		}
+	}
+
+	function applyEnvVars() {
+		_.forOwn(settings, function (value, name) {
+			if (process.env[name]) {
+				settings[name] = process.env[name];
+			}
+		});
 	}
 }
 
