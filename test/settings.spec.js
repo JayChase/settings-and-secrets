@@ -14,7 +14,7 @@ describe('settings', function () {
 			"prop2": "secretThree"
 		};
 
-	beforeEach(function () {
+	beforeEach(function () {		
 	});
 
 	it('should add customSettings properties to settings', function () {
@@ -27,7 +27,7 @@ describe('settings', function () {
 			.withArgs("./config.json").returns(false)
 			.withArgs("./secrets.json").returns(false);
 
-		settings = require('../source/settings')({ test: "test" }, null, fs);
+		settings = require('../source/settings')({ test: "test" }, null, false, fs);
 
 		expect(settings).to.haveOwnProperty("test");
 	});
@@ -44,7 +44,7 @@ describe('settings', function () {
 
 		sinon.stub(fs, "readFileSync").returns(JSON.stringify(configFile));
 
-		settings = require('../source/settings')(null, null, fs);
+		settings = require('../source/settings')(null, null, false, fs);
 
 		expect(settings).to.haveOwnProperty("prop1");
 	});
@@ -61,12 +61,12 @@ describe('settings', function () {
 
 		sinon.stub(fs, "readFileSync").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(null, null, fs);
+		settings = require('../source/settings')(null, null, false, fs);
 
 		expect(settings).to.haveOwnProperty("prop2");
 	});
 
-	it('should return override settings.json property with secrets.json property', function () {
+	it('should override settings.json property with secrets.json property', function () {
 		var fs = {
 			existsSync: function () { },
 			readFileSync: function () { }
@@ -80,7 +80,7 @@ describe('settings', function () {
 			.withArgs("./config.json").returns(JSON.stringify(configFile))
 			.withArgs("./secrets.json").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(null, null, fs);
+		settings = require('../source/settings')(null, null, false, fs);
 
 		expect(settings.prop1).to.equal("secretOne");
 	});
@@ -99,7 +99,7 @@ describe('settings', function () {
 			.withArgs("./config.json").returns(JSON.stringify(configFile))
 			.withArgs("./secrets.json").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')({ prop1: "customOne" }, null, fs);
+		settings = require('../source/settings')({ prop1: "customOne" }, null, false, fs);
 
 		expect(settings.prop1).to.equal("customOne");
 	});
@@ -122,8 +122,50 @@ describe('settings', function () {
 			.withArgs("./custom/custom.json").returns(JSON.stringify({ "custom": "custom" }))
 			.withArgs("./custom.json").returns(JSON.stringify(secretsFile));
 
-		settings = require('../source/settings')(null, ["./custom/config.json", "./custom/custom.json"], fs);
+		settings = require('../source/settings')(null, ["./custom/config.json", "./custom/custom.json"], false, fs);
 
 		expect(JSON.stringify(settings)).to.equal('{"prop1":"one","custom":"custom"}');
+	});
+
+	it('should override config property with ENV VAR value by default', function () {
+		var fs = {
+			existsSync: function () { },
+			readFileSync: function () { }
+		};
+
+		sinon.stub(fs, "existsSync")
+			.withArgs("./config.json").returns(true)
+			.withArgs("./secrets.json").returns(true);
+
+		sinon.stub(fs, "readFileSync")
+			.withArgs("./config.json").returns(JSON.stringify({ envProp1 : "configOne"}))
+			.withArgs("./secrets.json").returns(JSON.stringify(secretsFile));
+
+		process.env.envProp1 = "envOne";
+
+		settings = require('../source/settings')(null, null, false, fs);
+
+		expect(settings.envProp1).to.equal("envOne");
+	});
+
+	it('should not override config property with ENV VAR if ignoreEnvVars true', function () {
+		var fs = {
+			existsSync: function () { },
+			readFileSync: function () { }
+		};
+
+		sinon.stub(fs, "existsSync")
+			.withArgs("./config.json").returns(true)
+			.withArgs("./secrets.json").returns(true);
+
+		sinon.stub(fs, "readFileSync")
+			.withArgs("./config.json").returns(JSON.stringify({ envProp1 : "configOne"}))
+			.withArgs("./secrets.json").returns(JSON.stringify(secretsFile));				
+			
+		process.env.envProp1 = "envOne";
+
+		settings = require('../source/settings')(null, null, true, fs);
+
+		expect(settings.envProp1).to.equal("configOne");
 	});
 });
