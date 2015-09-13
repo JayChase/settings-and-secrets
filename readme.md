@@ -33,5 +33,5 @@ Note that the new files array will replace the existing config file list not mer
 
 To ignore environment variables and always use config files values set ignoreEnvVars to true.
 ```
-var settings = require('settings-and-secrets')(null,null,true]);
+var settings = require('settings-and-secrets')(null,null,true);
 ```
