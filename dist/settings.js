@@ -1,8 +1,8 @@
+var allSettings ={};
+
 //Note the file functions here are synchronous as require is synchronous anyway. 
 function settings(customSettings, settingsFiles, ignoreEnvVars, fs) {
-	var _ = require('lodash'),
-		settings = {
-		};
+	var _ = require('lodash');		
 
 	if (!fs) {
 		fs = require('fs');
@@ -12,16 +12,16 @@ function settings(customSettings, settingsFiles, ignoreEnvVars, fs) {
 	customSettings = _.isObject(customSettings) ? customSettings : {};
 
 	settingsFiles.forEach(function (settingsFile) {
-		_.assign(settings, loadFile(settingsFile));
+		_.assign(allSettings, loadFile(settingsFile));
 	});
 
-	_.assign(settings, customSettings);
+	_.assign(allSettings, customSettings);
 
 	if (!ignoreEnvVars) {
 		applyEnvVars();
 	}
 
-	return settings;
+	return allSettings;
 
 	function loadFile(filePath) {
 		if (fs.existsSync(filePath)) {
@@ -37,9 +37,9 @@ function settings(customSettings, settingsFiles, ignoreEnvVars, fs) {
 	}
 
 	function applyEnvVars() {
-		_.forOwn(settings, function (value, name) {
+		_.forOwn(allSettings, function (value, name) {
 			if (process.env[name]) {
-				settings[name] = process.env[name];
+				allSettings[name] = process.env[name];
 			}
 		});
 	}
