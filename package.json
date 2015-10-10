@@ -6,13 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "files":["dist"],
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "configuration",
+    "settings"
+  ],
   "author": {
     "name": "Jay Chase",
     "email": "JonathanChase@outlook.com",
     "url": "https://netdevplus.wordpress.com"
   },
-    "bugs": {
+  "bugs": {
     "url": "https://github.com/Useful-Software-Solutions-Ltd/settings-and-secrets/issues"
   },
   "repository": {

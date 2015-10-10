@@ -1,6 +1,7 @@
 var chai = require('chai'),
 	expect = chai.expect,
-	sinon = require('sinon');
+	sinon = require('sinon'),
+	decache = require('decache');
 
 chai.should();
 
@@ -12,9 +13,13 @@ describe('settings', function () {
 		secretsFile = {
 			"prop1": "secretOne",
 			"prop2": "secretThree"
-		};
+		},
+		path = require('path');
 
-	beforeEach(function () {		
+	beforeEach(function () {
+		//the settings are persistant (delcared outside the constructor function so need to decache to test cleanly
+		console.log(path.resolve(__dirname, '../source/settings.js'));
+		delete require.cache[path.resolve(__dirname, '../source/settings.js')];		
 	});
 
 	it('should add customSettings properties to settings', function () {
@@ -30,6 +35,24 @@ describe('settings', function () {
 		settings = require('../source/settings')({ test: "test" }, null, false, fs);
 
 		expect(settings).to.haveOwnProperty("test");
+	});
+	
+	it('should persist added customSettings properties over multple calls', function () {
+		var fs = {
+			existsSync: function () { },
+			readFileSync: function () { }
+		};
+
+		sinon.stub(fs, "existsSync")
+			.withArgs("./config.json").returns(false)
+			.withArgs("./secrets.json").returns(false);
+
+		settings = require('../source/settings')({ test: "test" }, null, false, fs);
+
+		var settings2 = require('../source/settings')();
+		
+		expect(settings2).to.haveOwnProperty("test");
+		
 	});
 
 	it('should return properties in settings.json', function () {
