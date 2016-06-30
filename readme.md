@@ -12,7 +12,7 @@ All settings value will be available as properties of **settings**.
 
 ##Installation
 ```
-npm install settings-and-secrets
+npm install --save settings-and-secrets
 ```
 
 ##Configuration
