@@ -1,9 +1,13 @@
 ##settings and secrets
+
 A NodeJS module to help manage configuration settings.
 
 ##Getting started
+
 ```
 var settings = require('settings-and-secrets')();
+
+var myStr = settings.prop1;
 ```
 
 By default the module will look for **config.json** and **secrets.json** in the root folder of the project. Environment variables will override config file values.
@@ -11,6 +15,7 @@ When first adding **secrets.json** remember to add it to the **.gitigrnore** fil
 All settings value will be available as properties of **settings**. 
 
 ##Installation
+
 ```
 npm install --save settings-and-secrets
 ```
@@ -32,6 +37,7 @@ var settings = require('settings-and-secrets')(null,['./settings/connectionStrin
 Note that the new files array will replace the existing config file list not merge with it so if you still want to use the default config and secrets files you wil have to add those too.
 
 To ignore environment variables and always use config files values set ignoreEnvVars to true.
+
 ```
 var settings = require('settings-and-secrets')(null,null,true);
 ```
