@@ -1,6 +1,6 @@
 {
   "name": "settings-and-secrets",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/settings.js",
   "scripts": {
@@ -19,11 +19,11 @@
     "url": "https://netdevplus.wordpress.com"
   },
   "bugs": {
-    "url": "https://github.com/Useful-Software-Solutions-Ltd/settings-and-secrets/issues"
+    "url": "https://github.com/JayChase/settings-and-secrets/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Useful-Software-Solutions-Ltd/settings-and-secrets.git"
+    "url": "https://github.com/JayChase/settings-and-secrets.git"
   },
   "license": "MIT",
   "dependencies": {
